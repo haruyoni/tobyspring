@@ -14,4 +14,10 @@ public class Sort {
 
         scores.forEach(System.out::println);
     }
+
+    public List<String> sortByLength(List<String> list) {
+        list.sort((o1, o2) -> o1.length() - o2.length());
+        System.out.println(list);
+        return list;
+    }
 }
