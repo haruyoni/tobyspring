@@ -24,14 +24,27 @@ class PaymentServiceSpringTest {
     @Autowired PaymentService paymentService; // 자동 주입
     // beanFactory를 주입하고 getBean으로 PaymentService를 가져올 수 있지만
     // 대신 안에있는 객체를 직접 연결해서 쓰는게 편함
+    @Autowired ExRateProviderStub exRateProviderStub; // 이 경고는 에러가 아님!!
 
     @Test
     @DisplayName("prepare 메소드가 요구사항 3가지를 잘 충족했는지 검증")
     void prepare() throws IOException {
+        // exRate : 1000
         Payment payment = paymentService.prepare(1L, "USD", BigDecimal.TEN);
 
         assertThat(payment.getExRate()).isEqualByComparingTo(valueOf(1_000));
         assertThat(payment.getConvertedAmount()).isEqualTo(valueOf(10_000)); // _ : 자릿수 구별 문자
+
+        // exRate : 5oo
+        exRateProviderStub.setExRate(valueOf(500)); // ExRateProviderStub을 Autowired하면 이렇게 직접 제어할 수 있음
+
+        Payment payment2 = paymentService.prepare(1L, "USD", BigDecimal.TEN);
+
+        assertThat(payment2.getExRate()).isEqualByComparingTo(valueOf(500));
+        assertThat(payment2.getConvertedAmount()).isEqualTo(valueOf(5_000)); // _ : 자릿수 구별 문자
+
+
+
 
         // 원화 환산 금액의 유효시간 계산
 //        assertThat(payment.getValidUntil()).isAfter(LocalDateTime.now());
