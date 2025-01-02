@@ -40,7 +40,7 @@ class PaymentServiceTest {
         Payment payment = paymentService.prepare(1L, "USD", BigDecimal.TEN);
 
         // 환율 정보 가져온다
-        assertThat(payment.getExRate()).isEqualTo(exRate);
+        assertThat(payment.getExRate()).isEqualByComparingTo(exRate); // isEqualTo는 자릿수까지 정확히 같은지 비교하기 때문에 오류 가능성이 큼 compareTo를 사용하는 것이 좋다
 
         // 원화 환산 금액 계산
         assertThat(payment.getConvertedAmount()).isEqualTo(convertedAmount); // _ : 자릿수 구별 문자
