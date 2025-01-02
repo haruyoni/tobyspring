@@ -31,5 +31,11 @@ class PaymentServiceTest {
         assertThat(payment.getValidUntil()).isAfter(LocalDateTime.now());
         assertThat(payment.getValidUntil()).isBefore(LocalDateTime.now().plusMinutes(30));
 
+        /*
+        위 테스트 코드 문제점
+        - 외부 환경 오류
+        - exrate에서 받아온걸로 계산한게 맞는지 확실x
+        - 유효시간 검증 짜침
+         */
     }
 }
