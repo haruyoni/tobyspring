@@ -2,8 +2,12 @@ package tobyspring.hellospring.payment;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tobyspring.hellospring.ObjectFactory;
 import tobyspring.hellospring.TestObjectFactory;
 
@@ -13,15 +17,19 @@ import java.math.BigDecimal;
 import static java.math.BigDecimal.valueOf;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
+@ExtendWith({SpringExtension.class})
+@ContextConfiguration(classes = TestObjectFactory.class)
 class PaymentServiceSpringTest {
+
+    @Autowired PaymentService paymentService; // 자동 주입
+    // beanFactory를 주입하고 getBean으로 PaymentService를 가져올 수 있지만
+    // 대신 안에있는 객체를 직접 연결해서 쓰는게 편함
 
     @Test
     @DisplayName("prepare 메소드가 요구사항 3가지를 잘 충족했는지 검증")
     void prepare() throws IOException {
-        BeanFactory beanFactory = new AnnotationConfigApplicationContext(TestObjectFactory.class);
-        PaymentService paymentService = beanFactory.getBean(PaymentService.class);
-
         Payment payment = paymentService.prepare(1L, "USD", BigDecimal.TEN);
+
         assertThat(payment.getExRate()).isEqualByComparingTo(valueOf(1_000));
         assertThat(payment.getConvertedAmount()).isEqualTo(valueOf(10_000)); // _ : 자릿수 구별 문자
 
