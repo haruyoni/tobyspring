@@ -11,6 +11,7 @@ import tobyspring.hellospring.TestPaymentConfig;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Clock;
+import java.time.LocalDateTime;
 
 import static java.math.BigDecimal.valueOf;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -20,6 +21,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class PaymentServiceSpringTest {
 
     @Autowired PaymentService paymentService; // 자동 주입
+    @Autowired Clock clock;
     // beanFactory를 주입하고 getBean으로 PaymentService를 가져올 수 있지만
     // 대신 안에있는 객체를 직접 연결해서 쓰는게 편함
     @Autowired ExRateProviderStub exRateProviderStub; // 이 경고는 에러가 아님!!
@@ -49,6 +51,17 @@ class PaymentServiceSpringTest {
 //        assertThat(payment.getValidUntil()).isBefore(LocalDateTime.now().plusMinutes(30));
 
 
+    }
+
+    @Test
+    void validUntil() throws IOException {
+        Payment payment = paymentService.prepare(1L, "USD", BigDecimal.TEN);
+
+        // valid until이 prepare() 30분 뒤로 설정 됐는가?
+        LocalDateTime now = LocalDateTime.now(this.clock);
+        LocalDateTime expectedValidUntil = now.plusMinutes(30);
+
+        assertThat(payment.getValidUntil()).isEqualTo(expectedValidUntil);
     }
 
     private static Payment testAmount(BigDecimal exRate, BigDecimal convertedAmount, Clock clock) throws IOException {
