@@ -28,7 +28,7 @@ class PaymentServiceSpringTest {
 
     @Test
     @DisplayName("prepare 메소드가 요구사항 3가지를 잘 충족했는지 검증")
-    void prepare() throws IOException {
+    void prepare() {
         // exRate : 1000
         Payment payment = paymentService.prepare(1L, "USD", BigDecimal.TEN);
 
@@ -54,7 +54,7 @@ class PaymentServiceSpringTest {
     }
 
     @Test
-    void validUntil() throws IOException {
+    void validUntil(){
         Payment payment = paymentService.prepare(1L, "USD", BigDecimal.TEN);
 
         // valid until이 prepare() 30분 뒤로 설정 됐는가?
@@ -64,7 +64,7 @@ class PaymentServiceSpringTest {
         assertThat(payment.getValidUntil()).isEqualTo(expectedValidUntil);
     }
 
-    private static Payment testAmount(BigDecimal exRate, BigDecimal convertedAmount, Clock clock) throws IOException {
+    private static Payment testAmount(BigDecimal exRate, BigDecimal convertedAmount, Clock clock) {
         PaymentService paymentService = new PaymentService(new ExRateProviderStub(exRate), clock);
 
         Payment payment = paymentService.prepare(1L, "USD", BigDecimal.TEN);

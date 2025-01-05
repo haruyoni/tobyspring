@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class WebApiExRateProvider  implements ExRateProvider {
     @Override
-    public BigDecimal getExRate(String currency) throws IOException {
+    public BigDecimal getExRate(String currency) {
         URI uri = new URI("https://open.er-api.com/v6/latest/" + currency);
         HttpURLConnection connection = (HttpURLConnection) uri.toURL().openConnection();
         BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));

@@ -24,7 +24,7 @@ public class Payment {
         this.validUntil = validUntil;
     }
 
-    public static Payment createPrepared(Long orderId, String currency, BigDecimal foreignCurrentAmount, ExRateProvider exRateProvider, LocalDateTime now) throws IOException {
+    public static Payment createPrepared(Long orderId, String currency, BigDecimal foreignCurrentAmount, ExRateProvider exRateProvider, LocalDateTime now) {
         BigDecimal exRate = exRateProvider.getExRate(currency);
         BigDecimal convertedAmount = foreignCurrentAmount.multiply(exRate);
         LocalDateTime validUntil = now.plusMinutes(30); // Bean으로 만든 clock의 now 값을 가져오게 변경

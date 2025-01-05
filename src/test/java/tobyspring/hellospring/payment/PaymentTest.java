@@ -12,7 +12,7 @@ import java.time.temporal.ChronoUnit;
 
 public class PaymentTest {
     @Test
-    void createPrepared() throws IOException {
+    void createPrepared() {
         Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
         ExRateProvider exRateProvider = new ExRateProviderStub(BigDecimal.valueOf(1_000));
 
@@ -23,7 +23,7 @@ public class PaymentTest {
     }
 
     @Test
-    void isValid() throws IOException {
+    void isValid() {
         Clock clock = Clock.fixed(Instant.now(), ZoneId.systemDefault());
 
         Payment payment = Payment.createPrepared(1L, "USD", BigDecimal.TEN, new WebApiExRateProvider(), LocalDateTime.now(clock));
