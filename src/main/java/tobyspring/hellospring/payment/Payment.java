@@ -1,5 +1,6 @@
 package tobyspring.hellospring.payment;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.Clock;
 import java.time.LocalDateTime;
@@ -21,7 +22,8 @@ public class Payment {
         this.validUntil = validUntil;
     }
 
-    public static Payment createPrepared(Long orderId, String currency, BigDecimal foreignCurrentAmount, BigDecimal exRate, LocalDateTime now) {
+    public static Payment createPrepared(Long orderId, String currency, BigDecimal foreignCurrentAmount, ExRateProvider exRateProvider, LocalDateTime now) throws IOException {
+        BigDecimal exRate = exRateProvider.getExRate(currency);
         BigDecimal convertedAmount = foreignCurrentAmount.multiply(exRate);
         LocalDateTime validUntil = now.plusMinutes(30); // Bean으로 만든 clock의 now 값을 가져오게 변경
 
