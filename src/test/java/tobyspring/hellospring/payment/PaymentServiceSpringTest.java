@@ -3,22 +3,20 @@ package tobyspring.hellospring.payment;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import tobyspring.hellospring.ObjectFactory;
-import tobyspring.hellospring.TestObjectFactory;
+import tobyspring.hellospring.TestPaymentConfig;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.Clock;
 
 import static java.math.BigDecimal.valueOf;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @ExtendWith({SpringExtension.class})
-@ContextConfiguration(classes = TestObjectFactory.class)
+@ContextConfiguration(classes = TestPaymentConfig.class)
 class PaymentServiceSpringTest {
 
     @Autowired PaymentService paymentService; // 자동 주입
@@ -53,8 +51,8 @@ class PaymentServiceSpringTest {
 
     }
 
-    private static Payment testAmount(BigDecimal exRate, BigDecimal convertedAmount) throws IOException {
-        PaymentService paymentService = new PaymentService(new ExRateProviderStub(exRate));
+    private static Payment testAmount(BigDecimal exRate, BigDecimal convertedAmount, Clock clock) throws IOException {
+        PaymentService paymentService = new PaymentService(new ExRateProviderStub(exRate), clock);
 
         Payment payment = paymentService.prepare(1L, "USD", BigDecimal.TEN);
 
