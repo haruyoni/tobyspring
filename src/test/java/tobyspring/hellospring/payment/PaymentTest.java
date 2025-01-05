@@ -2,6 +2,7 @@ package tobyspring.hellospring.payment;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import tobyspring.hellospring.exrate.ExRateProvider;
 import tobyspring.hellospring.exrate.WebApiExRateProvider;
 
 import java.io.IOException;
