@@ -18,7 +18,13 @@ public class WebApiExRateProvider  implements ExRateProvider {
     public BigDecimal getExRate(String currency) {
         String url = "https://open.er-api.com/v6/latest/" + currency;
 
-        // 이 아래로는 변경 가능성이 거의 없는 고정된 코드
+        return runApiForExRate(url);
+    }
+
+    // 이 아래로는 변경 가능성이 거의 없는 고정된 코드 -> 템플릿
+    // 템플릿 : 고정된 틀 안에 바꿀 수 있는 부분을 넣어서 사용하도록 만들어진 오브젝트
+    // 템플릿 메소드 패턴 : 고정된 틀의 로직을 가진 템플릿 메소드를 슈퍼클래스에 두고, 바뀌는 부분을 서브클래스의 메소드에 두는 구조(이거 사용한 건 아님)
+    private static BigDecimal runApiForExRate(String url) {
         URI uri;
         try {
             uri = new URI(url);
@@ -34,16 +40,14 @@ public class WebApiExRateProvider  implements ExRateProvider {
         }
 
         try {
-            return parseExRate(response);
+            return extractExRate(response);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     // 변동 가능성이 있는 코드 메소드로 분리
-    private static BigDecimal parseExRate(String response) throws JsonProcessingException {
+    private static BigDecimal extractExRate(String response) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         ExRateData data = mapper.readValue(response, ExRateData.class);
         return data.rates().get("KRW");
