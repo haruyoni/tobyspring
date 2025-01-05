@@ -18,10 +18,8 @@ public class PaymentService {
 
     public Payment prepare(Long orderId, String currency, BigDecimal foreignCurrentAmount) throws IOException {
         BigDecimal exRate = exRateProvider.getExRate(currency);
-        BigDecimal convertedAmount = foreignCurrentAmount.multiply(exRate);
-        LocalDateTime validUntil = LocalDateTime.now(clock).plusMinutes(30); // Bean으로 만든 clock의 now 값을 가져오게 변경
 
-        return new Payment(orderId, currency, foreignCurrentAmount, exRate, convertedAmount, validUntil);
+        return Payment.createPrepared(orderId, currency, foreignCurrentAmount, exRate, LocalDateTime.now(clock));
     }
 
 

@@ -20,6 +20,13 @@ public class Payment {
         this.validUntil = validUntil;
     }
 
+    public static Payment createPrepared(Long orderId, String currency, BigDecimal foreignCurrentAmount, BigDecimal exRate, LocalDateTime now) {
+        BigDecimal convertedAmount = foreignCurrentAmount.multiply(exRate);
+        LocalDateTime validUntil = now.plusMinutes(30); // Bean으로 만든 clock의 now 값을 가져오게 변경
+
+        return new Payment(orderId, currency, foreignCurrentAmount, exRate, convertedAmount, validUntil);
+    }
+
     public Long getOrderId() {
         return orderId;
     }
