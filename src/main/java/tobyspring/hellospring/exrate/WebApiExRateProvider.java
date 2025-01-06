@@ -24,19 +24,6 @@ public class WebApiExRateProvider  implements ExRateProvider {
     public BigDecimal getExRate(String currency) {
         String url = "https://open.er-api.com/v6/latest/" + currency;
 
-        return apiTemplate.getExRate(url, uri -> {
-            HttpRequest request =  HttpRequest.newBuilder()
-                    .uri(uri)
-                    .GET()
-                    .build();
-
-            try (HttpClient client = HttpClient.newBuilder().build()) {
-                client.send(request, HttpResponse.BodyHandlers.ofString()).body();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-
-            return null;
-        }, new ErApiExRateExtractor());
+        return apiTemplate.getExRate(url, new HttpClientApiExecutor(), new ErApiExRateExtractor());
     }
 }
