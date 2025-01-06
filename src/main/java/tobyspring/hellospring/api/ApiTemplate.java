@@ -12,12 +12,17 @@ public class ApiTemplate {
     private final ApiExecutor apiExecutor;
     private final ExRateExtractor exRateExtractor;
 
+    // 기본 생성자로 디폴트 콜백 설정 가능
     public ApiTemplate() {
         this.apiExecutor = new HttpClientApiExecutor();
         this.exRateExtractor = new ErApiExRateExtractor();
     }
 
-
+    // PaymentConfig에서 콜백 설정가능한 생성자
+    public ApiTemplate(ApiExecutor apiExecutor, ExRateExtractor exRateExtractor) {
+        this.apiExecutor = apiExecutor;
+        this.exRateExtractor = exRateExtractor;
+    }
 
     public BigDecimal getForExRate(String url) {
         return this.getForExRate(url, this.apiExecutor, this.exRateExtractor);
