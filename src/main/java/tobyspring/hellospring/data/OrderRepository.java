@@ -30,6 +30,7 @@ public class OrderRepository {
 
         try{ // em.persist
             em.persist(order);
+            em.flush();
 
             transaction.commit();
         } catch (RuntimeException e) {
