@@ -3,9 +3,9 @@ package tobyspring.hellospring.order;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
-
-@Entity
-@Table(name = "orders")
+//
+//@Entity
+//@Table(name = "orders")
 public class Order {
     @Id @GeneratedValue
     private Long id;
@@ -16,6 +16,10 @@ public class Order {
     private BigDecimal total;
 
     public Order() {
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Order(String no, BigDecimal total) {
