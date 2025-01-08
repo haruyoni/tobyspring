@@ -1,6 +1,7 @@
 package tobyspring.hellospring.order;
 
 import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,6 @@ import org.springframework.jdbc.core.simple.JdbcClient;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import tobyspring.hellospring.OrderConfig;
-import tobyspring.hellospring.TestPaymentConfig;
 
 import javax.sql.DataSource;
 import java.math.BigDecimal;
@@ -44,6 +44,7 @@ public class OrderServiceSpringTest {
     }
 
     @Test
+    @DisplayName("트랜잭션 검증 테스트")
     void createDuplicateOrders(){
         List<OrderReq> orderReqs = List.of(new OrderReq("0300", BigDecimal.ONE),
                 new OrderReq("0300", BigDecimal.TWO)
