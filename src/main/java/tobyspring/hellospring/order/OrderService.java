@@ -6,6 +6,7 @@ import tobyspring.hellospring.data.JdbcOrderRepository;
 import tobyspring.hellospring.data.JpaOrderRepository;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class OrderService {
     private final OrderRepository orderRepository;
@@ -23,6 +24,11 @@ public class OrderService {
             this.orderRepository.save(order);
             return order;
         });
+    }
+
+    public List<Order> createOrders(List<OrderReq> reqs) {
+        return new TransactionTemplate(transactionManager).execute(status ->
+                reqs.stream().map(req -> createOrder(req.no(), req.total())).toList());
     }
 
 }
